@@ -30,35 +30,41 @@
         text-align:center;
     }
 </style>
-<div >
-  <h1 class="center">Lens joue dans :</h1>
+<div id="contener">
+  <div >
+    <h1 class="center">Lens joue dans :</h1>
+  </div>
+
+  <div class="tick"
+       data-did-init="handleTickInit">
+
+      <div data-repeat="true"
+           data-layout="horizontal center fit"
+           data-transform="preset(d, h, m, s) -> delay">
+
+          <div class="tick-group">
+
+              <div data-key="value"
+                   data-repeat="true"
+                   data-transform="pad(00) -> split -> delay">
+
+                  <span data-view="flip"></span>
+
+              </div>
+
+              <span data-key="label"
+                    data-view="text"
+                    class="tick-label"></span>
+
+          </div>
+
+      </div>
+
+  </div>
 </div>
 
-<div class="tick"
-     data-did-init="handleTickInit">
-
-    <div data-repeat="true"
-         data-layout="horizontal center fit"
-         data-transform="preset(d, h, m, s) -> delay">
-
-        <div class="tick-group">
-
-            <div data-key="value"
-                 data-repeat="true"
-                 data-transform="pad(00) -> split -> delay">
-
-                <span data-view="flip"></span>
-
-            </div>
-
-            <span data-key="label"
-                  data-view="text"
-                  class="tick-label"></span>
-
-        </div>
-
-    </div>
-
+<div class="tick-onended-message" style="display:none">
+    <p>Le match commence</p>
 </div>
 
 <!-- END OF FLIP EXAMPLE PRESET -->

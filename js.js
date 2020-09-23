@@ -3,11 +3,12 @@
 
 //lens id : 546
 
+// https://pqina.nl/flip/#presets
 
 
 function getNextMatchAndStartTimer() {
 	var param = "";
-	param += "status=SCHEDULED";
+	param += "status=SCHEDULED,LIVE";
 	param += "&dateFrom=" + getCurrentDate();
 	param += "&dateTo=" + getDateIn99days();
 
@@ -18,23 +19,39 @@ function getNextMatchAndStartTimer() {
 		type: 'GET'
 	}).done(function(response) {
 		console.log(response);
-		var nextMatch = filterNextMatch(response);
-		console.log(nextMatch);
-        
-    Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
-      localTick.value = value;
-        };
+
+		if (matchLive(response)) {
+			document.getElementById("contener").innerHTML = '<h1 class="center">Lens joue en ce moment, tu n\'as rien à faire ici.</h1>';
+		} else {
+			var nextMatch = filterNextMatch(response);
+			console.log(nextMatch);
+	        
+	    	Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
+	      	localTick.value = value;
+	        };
+		}
+		
 	});
+}
+
+function matchLive(response) {
+	for (i in response.matches) {
+		if(response.matches[i].status === "LIVE") {
+			return true;
+		}
+	}
+	return false;
 }
 
 function filterNextMatch(response) {
 	var nextMatch;
 
 	for (i in response.matches) {
-		if (nextMatch === undefined) {
+		if (nextMatch === undefined && response.matches[i].status === "SCHEDULED") {
 			nextMatch = response.matches[i];
 		} else {
-			if (Date.parse(response.matches[i].utcDate) < Date.parse(nextMatch.utcDate)) {
+			if (Date.parse(response.matches[i].utcDate) < Date.parse(nextMatch.utcDate)
+				&& response.matches[i].status === "SCHEDULED") {
 				nextMatch = response.matches[i];
 			}
 		}
