@@ -8,8 +8,8 @@
 
 function getNextMatchAndStartTimer() {
 	var param = "";
-	param += "status=SCHEDULED,PAUSED,IN_PLAY";
-	param += "&dateFrom=" + getCurrentDate();
+	param += "status=SCHEDULED,PAUSED,IN_PLAY,FINISHED";
+	param += "&dateFrom=" + getDateOut99days();
 	param += "&dateTo=" + getDateIn99days();
 
 	$.ajax({
@@ -24,7 +24,12 @@ function getNextMatchAndStartTimer() {
 			document.getElementById("contener").innerHTML = '<h1 class="center">Lens joue en ce moment, tu n\'as rien à faire ici.</h1>';
 		} else {
 			var nextMatch = filterNextMatch(response);
+			var previousMatch = filterPreviousMatch(response);
 			console.log(nextMatch);
+			console.log(previousMatch);
+
+			updateNextOpponent(nextMatch);
+			updatePreviousOpponent(previousMatch);
 	        
 	    	Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
 	      	localTick.value = value;
@@ -50,9 +55,8 @@ function filterNextMatch(response) {
 	for (i in response.matches) {
 		if (nextMatch === undefined && response.matches[i].status === "SCHEDULED") {
 			nextMatch = response.matches[i];
-		} else {
-			if (Date.parse(response.matches[i].utcDate) < Date.parse(nextMatch.utcDate)
-				&& response.matches[i].status === "SCHEDULED") {
+		} else if (response.matches[i].status === "SCHEDULED") {
+			if (Date.parse(response.matches[i].utcDate) < Date.parse(nextMatch.utcDate)) {
 				nextMatch = response.matches[i];
 			}
 		}
@@ -61,15 +65,59 @@ function filterNextMatch(response) {
 	return nextMatch;
 }
 
+function updateNextOpponent(nextMatch) {
+	var html = "Lens joue contre <span style='color:red;'>" + getOpponentName(nextMatch) + "</span> dans :";
+	document.getElementById("divOpponentNextMatch").innerHTML = html;
+}
 
+function updatePreviousOpponent(previousMatch) {
+	
+	var html = "<p>Résultats du dernier match :</p><p>" + printMatchResult(previousMatch) + "</p>";
+	document.getElementById("divOpponentPreviousMatch").innerHTML = html;
+}
 
-function getCurrentDate() {
-	return formatDate(new Date());
+function printMatchResult(match) {
+	if (match.score.extraTime.homeTeam !== null) {
+		var finalScore = match.score.extraTime;
+	} else if (match.score.fullTime.homeTeam !== null) {
+		var finalScore = match.score.fullTime;
+	}
+	return match.homeTeam.name + " " + finalScore.homeTeam + " - " + finalScore.awayTeam + " " + match.awayTeam.name;
+}
+
+function getOpponentName(match) {
+	if (match.awayTeam.id == 546) {
+		return match.homeTeam.name;
+	} else {
+		return match.awayTeam.name;
+	}
+}
+
+function filterPreviousMatch(response) {
+	var previousMatch;
+
+	for (i in response.matches) {
+		if (previousMatch === undefined && response.matches[i].status === "FINISHED") {
+			previousMatch = response.matches[i];
+		} else if (response.matches[i].status === "FINISHED") {
+			if (Date.parse(response.matches[i].utcDate) > Date.parse(previousMatch.utcDate)) {
+				previousMatch = response.matches[i];
+			}
+		}
+	}
+
+	return previousMatch;
 }
 
 function getDateIn99days() {
  	var d = new Date();
  	d.setDate(d.getDate()+99);
+	return formatDate(d);
+}
+
+function getDateOut99days() {
+ 	var d = new Date();
+ 	d.setDate(d.getDate()-99);
 	return formatDate(d);
 }
 
