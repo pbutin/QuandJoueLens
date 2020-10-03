@@ -8,7 +8,7 @@
 
 function getNextMatchAndStartTimer() {
 	var param = "";
-	param += "status=SCHEDULED,LIVE";
+	param += "status=SCHEDULED,PAUSED,IN_PLAY";
 	param += "&dateFrom=" + getCurrentDate();
 	param += "&dateTo=" + getDateIn99days();
 
@@ -36,7 +36,8 @@ function getNextMatchAndStartTimer() {
 
 function matchLive(response) {
 	for (i in response.matches) {
-		if(response.matches[i].status === "LIVE") {
+		if(response.matches[i].status === "IN_PLAY" 
+			|| response.matches[i].status === "PAUSED") {
 			return true;
 		}
 	}
