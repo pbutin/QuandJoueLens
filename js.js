@@ -66,7 +66,7 @@ function filterNextMatch(response) {
 }
 
 function updateNextOpponent(nextMatch) {
-	var html = "Lens joue contre <span style='color:red;'>" + getOpponentName(nextMatch) + "</span> dans :";
+	var html = "Lens joue contre <b>" + getOpponentName(nextMatch) + "</b> dans :";
 	document.getElementById("divOpponentNextMatch").innerHTML = html;
 }
 
@@ -82,7 +82,7 @@ function printMatchResult(match) {
 	} else if (match.score.fullTime.homeTeam !== null) {
 		var finalScore = match.score.fullTime;
 	}
-	return match.homeTeam.name + " " + finalScore.homeTeam + " - " + finalScore.awayTeam + " " + match.awayTeam.name;
+	return match.homeTeam.name + " <b>" + finalScore.homeTeam + "</b> - <b>" + finalScore.awayTeam + "</b> " + match.awayTeam.name + "";
 }
 
 function getOpponentName(match) {
