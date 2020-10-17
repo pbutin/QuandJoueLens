@@ -31,12 +31,35 @@ function getNextMatchAndStartTimer() {
 			updateNextOpponent(nextMatch);
 			updatePreviousOpponent(previousMatch);
 	        
-	    	Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
-	      	localTick.value = value;
+			Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
+			localTick.value = value;
 	        };
 		}
+	});
+
+
+	$.ajax({
+		headers: { 'X-Auth-Token': '0c90d6e5fabd41a1ae0ef8a0121b3886' },
+		url: 'http://api.football-data.org/v2/competitions/2015/standings',
+		dataType: 'json',
+		type: 'GET'
+	}).done(function(response) {
+		console.log(response);
+
+		var lens = getLens(response);
+		console.log(lens);
+
+		updateStanding(lens);
 		
 	});
+}
+
+function getLens(response) {
+	for (i in response.standings[0].table) {
+		if (response.standings[0].table[i].team.id == 546) {
+			return response.standings[0].table[i];
+		}
+	}
 }
 
 function matchLive(response) {
@@ -71,9 +94,20 @@ function updateNextOpponent(nextMatch) {
 }
 
 function updatePreviousOpponent(previousMatch) {
-	
-	var html = "<p>Résultats du dernier match :</p><p>" + printMatchResult(previousMatch) + "</p>";
+	var html = "<p>" + printMatchResult(previousMatch) + "</p>";
 	document.getElementById("divOpponentPreviousMatch").innerHTML = html;
+}
+
+function updateStanding(lens) {
+	var html = "<p>Nous sommes actuellement " + printPosition(lens.position) + " et 1<sup>er</sup> dans nos cœurs</p>";
+	document.getElementById("divPosition").innerHTML = html;
+}
+
+function printPosition(position) {
+	if (position == 1) {
+		return "<b>1<sup>er</sup></b>";
+	}
+	return "<b>" + position + "<sup>e</sup></b>";
 }
 
 function printMatchResult(match) {
@@ -131,34 +165,32 @@ function formatDate(d) {
 }
 
 var localTick;
- function handleTickInit(tick) {
+function handleTickInit(tick) {
+	var locale = {
+	    YEAR_PLURAL: 'An',
+	    YEAR_SINGULAR: 'Ans',
+	    MONTH_PLURAL: 'Mois',
+	    MONTH_SINGULAR: 'Mois',
+	    WEEK_PLURAL: 'Semaines',
+	    WEEK_SINGULAR: 'Semaine',
+	    DAY_PLURAL: 'Jours',
+	    DAY_SINGULAR: 'Jour',
+	    HOUR_PLURAL: 'Heures',
+	    HOUR_SINGULAR: 'Heure',
+	    MINUTE_PLURAL: 'Minutes',
+	    MINUTE_SINGULAR: 'Minute',
+	    SECOND_PLURAL: 'Secondes',
+	    SECOND_SINGULAR: 'Seconde',
+	    MILLISECOND_PLURAL: 'Millisecondes',
+	    MILLISECOND_SINGULAR: 'Milliseconde'
+	};
+	for (var key in locale) {
+	    if (!locale.hasOwnProperty(key)) { continue; }
+	    tick.setConstant(key, locale[key]);
+	}
 
-        // Uncomment to set labels to different language ( in this case Dutch )
-        var locale = {
-            YEAR_PLURAL: 'An',
-            YEAR_SINGULAR: 'Ans',
-            MONTH_PLURAL: 'Mois',
-            MONTH_SINGULAR: 'Mois',
-            WEEK_PLURAL: 'Semaines',
-            WEEK_SINGULAR: 'Semaine',
-            DAY_PLURAL: 'Jours',
-            DAY_SINGULAR: 'Jour',
-            HOUR_PLURAL: 'Heures',
-            HOUR_SINGULAR: 'Heure',
-            MINUTE_PLURAL: 'Minutes',
-            MINUTE_SINGULAR: 'Minute',
-            SECOND_PLURAL: 'Secondes',
-            SECOND_SINGULAR: 'Seconde',
-            MILLISECOND_PLURAL: 'Millisecondes',
-            MILLISECOND_SINGULAR: 'Milliseconde'
-        };
-        for (var key in locale) {
-            if (!locale.hasOwnProperty(key)) { continue; }
-            tick.setConstant(key, locale[key]);
-        }
+	localTick = tick;
 
-        localTick = tick;
+	getNextMatchAndStartTimer();
 
-        getNextMatchAndStartTimer();
-
-  }
+}

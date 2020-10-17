@@ -5,3 +5,8 @@ text-align: center;
 b {
 	color: red;
 }
+
+.box {
+	display: inline-block;
+	margin: 2em;
+}
