@@ -9,6 +9,7 @@
     <link href="flip/flip.min.css" rel="stylesheet">
     <link href="style.css" type="text/css" rel="stylesheet"/>
     <link href="timer.css" type="text/css" rel="stylesheet"/>
+    <link href="loadingScreen.css" type="text/css" rel="stylesheet"/>
   </head>
 
   <body>
@@ -16,10 +17,13 @@
 
 </style>
 <div id="contener">
-  <div >
-    <h1 class="center" id="divOpponentNextMatch">Lens joue dans :</h1>
+  <div id="loadingScreen" class="center">
+    <div class="loadingio-spinner-spinner-6x6axxwbn0h"><div class="ldio-n8rdr1cyhdm">
+      <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      </div></div>
   </div>
 
+  <h1 class="center" id="divOpponentNextMatch"></h1>
   <div class="tick"
        data-did-init="handleTickInit">
       <div data-repeat="true"

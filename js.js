@@ -30,6 +30,7 @@ function getNextMatchAndStartTimer() {
 
 			updateNextOpponent(nextMatch);
 			updatePreviousOpponent(previousMatch);
+			removeLoadingScreen();
 	        
 			Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
 			localTick.value = value;
@@ -101,6 +102,10 @@ function updatePreviousOpponent(previousMatch) {
 function updateStanding(lens) {
 	var html = "<p>Nous sommes actuellement " + printPosition(lens.position) + " et 1<sup>er</sup> dans nos cœurs</p>";
 	document.getElementById("divPosition").innerHTML = html;
+}
+
+function removeLoadingScreen() {
+	document.getElementById("loadingScreen").innerHTML = "";
 }
 
 function printPosition(position) {
