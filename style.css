@@ -10,3 +10,11 @@ b {
 	display: inline-block;
 	margin: 2em;
 }
+
+.souligne {
+	text-decoration: underline;
+}
+
+p {
+	margin: 0;
+}

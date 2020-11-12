@@ -28,9 +28,9 @@ function getNextMatchAndStartTimer() {
 			console.log(nextMatch);
 			console.log(previousMatch);
 
+			removeLoadingScreen();
 			updateNextOpponent(nextMatch);
 			updatePreviousOpponent(previousMatch);
-			removeLoadingScreen();
 	        
 			Tick.count.down(nextMatch.utcDate).onupdate = function(value) {
 			localTick.value = value;
@@ -95,12 +95,14 @@ function updateNextOpponent(nextMatch) {
 }
 
 function updatePreviousOpponent(previousMatch) {
-	var html = "<p>" + printMatchResult(previousMatch) + "</p>";
+	var html = "<p class=\"souligne\">Dernier match:</p>";
+	html += "<p>" + printMatchResult(previousMatch) + "</p>";
 	document.getElementById("divOpponentPreviousMatch").innerHTML = html;
 }
 
 function updateStanding(lens) {
-	var html = "<p>Nous sommes actuellement " + printPosition(lens.position) + " et 1<sup>er</sup> dans nos cœurs</p>";
+	var html = "<p class=\"souligne\">Classement:</p>";
+	html += "<p>Nous sommes actuellement " + printPosition(lens.position) + " et 1<sup>er</sup> dans nos cœurs</p>";
 	document.getElementById("divPosition").innerHTML = html;
 }
 
