@@ -8,7 +8,7 @@
 
 function requestData() {
 	$.ajax({
-		url: 'https://peaceful-cliffs-61822.herokuapp.com/lensData',
+		url: 'https://quand-joue-lens.herokuapp.com/lensData',
 		dataType: 'json',
 		type: 'GET'
 	}).done(function(response) {
