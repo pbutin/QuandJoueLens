@@ -10,31 +10,35 @@ function requestData() {
 	$.ajax({
 		url: 'https://quand-joue-lens.herokuapp.com/lensData',
 		dataType: 'json',
-		type: 'GET'
-	}).done(function(response) {
-		console.log(response);
-		var standing = response.standing;
-		var matches = response.matches;
+		type: 'GET',
+		success: function (response) {
+			console.log(response);
+			var standing = response.standing;
+			var matches = response.matches;
 
-		var lens = findLens(standing);
-		console.log("Standing: " + lens);
-		updateStanding(lens);
+			var lens = findLens(standing);
+			console.log("Standing: " + lens);
+			updateStanding(lens);
 
 
-		if (isMatchLive(matches)) {
-			document.getElementById("contener").innerHTML = '<h1 class="center">Lens joue en ce moment, tu n\'as rien à faire ici.</h1>';
-		} else {
-			var nextMatch = findNextMatch(matches);
-			var previousMatch = findPreviousMatch(matches);
-			console.log(nextMatch);
-			console.log(previousMatch);
+			if (isMatchLive(matches)) {
+				document.getElementById("contener").innerHTML = '<h1 class="center">Lens joue en ce moment, tu n\'as rien à faire ici.</h1>';
+			} else {
+				var nextMatch = findNextMatch(matches);
+				var previousMatch = findPreviousMatch(matches);
+				console.log(nextMatch);
+				console.log(previousMatch);
 
-			removeLoadingScreen();
-			updateNextOpponent(nextMatch);
-			updatePreviousOpponent(previousMatch);
-	        
-			initTimer(nextMatch.utcDate);
-	        }
+				removeLoadingScreen();
+				updateNextOpponent(nextMatch);
+				updatePreviousOpponent(previousMatch);
+		        
+				initTimer(nextMatch.utcDate);
+		    }
+		},
+		error: function(xhr, status, error) {
+		  alert(xhr.responseText);
+		}
 	});
 }
 
