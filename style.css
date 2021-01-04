@@ -1,5 +1,5 @@
 .center {
-text-align: center;
+	text-align: center;
 }
 
 b {
@@ -9,6 +9,7 @@ b {
 .box {
 	display: inline-block;
 	margin: 2em;
+	vertical-align: top;
 }
 
 .souligne {

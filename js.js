@@ -92,7 +92,7 @@ function updateNextOpponent(nextMatch) {
 
 function updatePreviousOpponent(previousMatch) {
 	var html = "<p class=\"souligne\">Dernier match:</p>";
-	html += "<p>" + printMatchResult(previousMatch) + "</p>";
+	html += "<p>" + printMatchResult(previousMatch) + "<sup></sup></p>";
 	document.getElementById("divOpponentPreviousMatch").innerHTML = html;
 }
 
