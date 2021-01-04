@@ -7,7 +7,7 @@ b {
 }
 
 .box {
-	display: inline-block;
+	align-self: flex-start;
 	margin: 2em;
 }
 
@@ -17,4 +17,10 @@ b {
 
 p {
 	margin: 0;
+}
+
+.flex {
+	  display: flex;
+	justify-content:  space-evenly;
+
 }
