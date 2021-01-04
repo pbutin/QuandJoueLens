@@ -103,7 +103,7 @@ function updateStanding(lens) {
 }
 
 function updateVideoResume(videoId) {
-	var html = "<iframe width=\"560\" height=\"315\" src=\"//www.youtube.com/embed/" + videoId + "\" frameborder=\"0\" allowfullscreen></iframe>";
+	var html = "<a href=\"https://www.youtube.com/watch?v=" + videoId + "\" target=\"_blank\">Résumé du match</a>";
 ;
 	document.getElementById("divVideoYoutube").innerHTML = html;
 }
