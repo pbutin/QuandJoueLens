@@ -86,8 +86,15 @@ function findNextMatch(response) {
 }
 
 function updateNextOpponent(nextMatch) {
-	var html = "Lens joue contre <b>" + getOpponentName(nextMatch) + "</b> dans :";
+	var html = "Lens joue " + insertMatchLocation(nextMatch.homeTeam.id) + " contre <b>" + getOpponentName(nextMatch) + "</b> dans :";
 	document.getElementById("divOpponentNextMatch").innerHTML = html;
+}
+
+function insertMatchLocation(teamId) {
+	if (teamId == 546) {
+		return "à Bollaert";
+	}
+	return "à l'extérieur";
 }
 
 function updatePreviousOpponent(previousMatch) {
